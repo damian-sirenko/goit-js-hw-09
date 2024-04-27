@@ -70,7 +70,6 @@ const markup = images.reduce((html, image) => {
         <img
           class="gallery-image"
           src="${image.preview}"
-          data-source="${image.original}"
           alt="${image.description}"
         />
       </a>
@@ -80,18 +79,13 @@ const markup = images.reduce((html, image) => {
 const galleryEl = document.querySelector('.gallery');
 galleryEl.insertAdjacentHTML('afterbegin', markup);
 
-galleryEl.addEventListener('click', onImageClick);
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
+const lightBox = new SimpleLightbox('.gallery a', {
+	captions: true,
+	captionsData: "alt",
+	captionsPosition: "bottom",
+	captionDelay: 250,
+});
 
-function onImageClick(event) {
-  if (event.target.nodeName !== 'IMG') {
-    return;
-  }
-  if (event.target !== event.currentTarget) {
-    event.preventDefault();
-    const originalImageLink = event.target.dataset.source;
 
-    basicLightbox
-      .create(`<img width="1400" height="900" src="${originalImageLink}">`)
-      .show();
-  }
-}
