@@ -2,6 +2,7 @@ let formData = {
   email: '',
   message: '',
 };
+
 const formRefs = {
   form: document.querySelector('.feedback-form'),
   userEmail: document.querySelector('input[type="email"]'),
@@ -16,11 +17,12 @@ if (savedData) {
 }
 
 function onInputType(event) {
-  formData[event.target.name] = event.target.value.trim();
-  localStorage.setItem('feedback-form-state', JSON.stringify(formData));
+	if (!event.target.name) return; {
+    formData[event.target.name] = event.target.value.trim();
+    localStorage.setItem('feedback-form-state', JSON.stringify(formData));
+  }
 }
-formRefs.userEmail.addEventListener('input', onInputType);
-formRefs.userMessage.addEventListener('input', onInputType);
+formRefs.form.addEventListener('input', onInputType);
 
 function onFormSubmit(event) {
   event.preventDefault();
@@ -29,8 +31,10 @@ function onFormSubmit(event) {
   } else {
     console.log('FormData:', formData);
     localStorage.removeItem('feedback-form-state');
-    formRefs.form.reset();
+	  formRefs.form.reset();
+	  formData = {email: '', message: ''};
   }
 }
 
 formRefs.form.addEventListener('submit', onFormSubmit);
+
